@@ -3,27 +3,28 @@
 {% block title %}Rooms | {% endblock %}
 
 {% block content %}
-<div class="p-10 lg:p-20 text-center">
-    <h1 class="text-3xl lg:text-6xl text-white">Выберите/создайте чат</h1>
-</div>
+<div class="bg-white rounded-xl m-48 p-8 w-max pt-6 mx-auto">
 
-<div class="w-full flex flex-wrap items-center">
-    {% for room in rooms %}
-        <div class="w-full lg:w-1/4 px-3 py-3">
-            <div class="p-4 bg-white shadow rounded-xl text-center">
-                <a href="{% url 'room' room.slug %}" class="mb-5 text-2xl font-semibold">{{ room.name }}</a>
+    <div class="text-center pb-4 border-b-2">
+        <h1 class="text-3xl text-4xl">Выберите/создайте чат</h1>
+    </div>
 
-<!--                <a href="{% url 'room' room.slug %}" class="px-5 py-3 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Join</a>-->
+    <div class="w-full mt-4 items-center">
+        {% for room in rooms %}
+            <div class="w-full mx-auto  px-2 py-2">
+                <div class="p-4 bg-indigo-500 hover:bg-indigo-700 text-white rounded-xl text-center shadow" id="room">
+                    <a href="{% url 'room' room.slug %}" id='link' class="mb-5 text-xl font-semibold">{{ room.name }}</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 
-<div class="w-full flex flex-wrap items-center">
-    <div class="w-full lg:w-1/4 px-3 py-3">
-        <div class="p-4 bg-white shadow rounded-xl text-center">
-            <input id="room-name-input" type="text" placeholder="Введите название чата" size="40">
-            <input id="room-name-submit" class="px-3 py-2 rounded-xl text-white bg-teal-600 hover:bg-teal-700" type="button" value="Enter">
+    <div class="w-full items-center">
+        <div class="w-full px-3 mx-auto py-3">
+            <div class="flex bg-white shadow border-2 rounded-xl text-center">
+                <input id="room-name-input" class="w-3/4 p-4 rounded-xl" type="text" placeholder="Введите название чата" size="40">
+                <input id="room-name-submit" class="w-1/4 m-1 rounded-xl text-white text-lg bg-indigo-500 hover:bg-indigo-700" type="button" value="Создать">
+            </div>
         </div>
     </div>
 </div>
@@ -39,6 +40,10 @@
     document.querySelector('#room-name-submit').onclick = function(e) {
         var roomName = document.querySelector('#room-name-input').value;
         window.location.pathname = '/rooms/' + roomName + '/';
+    };
+
+    document.getElementById("room").onclick = function(){
+       window.location.href = document.getElementById("link").href;
     };
 </script>
 {% endblock %}

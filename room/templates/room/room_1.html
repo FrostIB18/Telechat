@@ -10,18 +10,17 @@
 
 <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
     <div class="chat-messages space-y-3" id="chat-messages">
-        {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }} {{ m.date_added }}<br>{% endfor %}
+        {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }} <br>{{ m.date_added }}<br>{% endfor %}
     </div>
 </div>
 
 <div class="lg:w-2/4 mt-6 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
     <form method="post" action="." class="flex">
-        <input type="text" name="content" class="flex-1 mr-3" placeholder="Your message..." id="chat-message-input">
+        <input type="text" name="content" class="flex-1 mr-3" placeholder="Сообщение..." id="chat-message-input">
 
         <button 
             class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700"
-            id="chat-message-submit"
-        >Submit</button>
+            id="chat-message-submit">Отправить</button>
     </form>
 </div>
 {% endblock %}
