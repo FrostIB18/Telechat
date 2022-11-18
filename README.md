@@ -1,4 +1,4 @@
-#Telechat
+# Telechat
 Steps to run:
 1. git clone https://github.com/FrostIB18/Telechat.git
 2. write commands in the Terminal:
