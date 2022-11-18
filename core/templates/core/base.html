@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}Telechat</title>
+    <link rel="shortcut icon" href="#">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .messages {
+                height: 400px;
+                overflow-y: auto;
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    <nav class="flex items-center justify-between px-4 py-6">
+        <div>
+            <a href="/" class="text-xl text-white"></a>
+        </div>
+
+        <div class="w-1/12 items-center space-x-4">
+            {% if request.user.is_authenticated %}
+                <a href="/logout/" class="text-white hover:text-gray-400"><img class='' height="30%" width="30%" src="{% static 'chat/door.png' %}"></a>
+            {% endif %}
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

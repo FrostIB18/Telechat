@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ room.name }}</title>
+    <link href="{% static 'chat/style.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="h-screen lg:w-1/3 mx-auto block bg-white">
+
+    <div class="flex py-3 border-b-2">
+        <div class="w-1/12 pl-2">
+        </div>
+        <div class="text-auto w-10/12 my-auto">
+            <h4 class="text-center text-xl"><strong>{{ room.name }}</strong></h4>
+        </div>
+
+        <div class="w-1/12 my-auto pr-2">
+                <a href="/rooms/"><img class='' height="100%" src="{% static 'chat/door.png' %}"></a>
+        </div>
+<!--          <h4>{{ message.user.username.sum }}</h4>-->
+    </div>
+
+    <div class="" id="chat-content"
+         style="overflow-y: scroll; height:87% !important;">
+
+      <div class="media media-meta-day">Today</div>
+
+      <div class="media media-chat">
+        <div class="media-body" id="chat-messages">
+            {% for m in messages %}
+            <b>{{ m.user.username }}</b>
+            <div class="media-body w-fit"><p>{{ m.content }}</p></div>
+            <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
+            {% endfor %}
+        </div>
+      </div>
+      <div class="media media-chat media-chat-reverse">
+        <div class="media-body">
+          <p>Okay</p>
+          <p>We will go on sunday? </p>
+          <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
+        </div>
+      </div>
+<!--      <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">-->
+<!--          <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>-->
+<!--      </div>-->
+    </div>
+
+    <div class="border-t-2 bg-white py-2">
+        <form method="post" action="." class="flex">
+            <input class="publisher-input ml-4" type="text" placeholder="Сообщение..." id="chat-message-input">
+            <div class="">
+            <button
+                class="px-5 py-3 text-white rounded-xl bg-indigo-500 hover:bg-indigo-700"
+                id="chat-message-submit">Отправить</button>
+            </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+{{ room.slug|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+<script>
+    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+    const chatSocket = new ReconnectingWebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/'
+        + roomName
+        + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.message) {
+            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+        } else {
+            alert('The message was empty!')
+        }
+
+        scrollToBottom();
+    };
+
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        e.preventDefault()
+
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+
+        console.log({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        })
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        }));
+
+        messageInputDom.value = '';
+
+        return false
+    };
+
+    /**
+    * A function for finding the messages element, and scroll to the bottom of it.
+    */
+    function scrollToBottom() {
+        let objDiv = document.getElementById("chat-content");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    };
+
+    // Add this below the function to trigger the scroll on load.
+    scrollToBottom();
+</script>
+{% endblock %}
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>
