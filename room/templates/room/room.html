@@ -29,24 +29,34 @@
     <div class="" id="chat-content"
          style="overflow-y: scroll; height:87% !important;">
 
-      <div class="media media-meta-day">Today</div>
+        <div class="media media-meta-day">Today</div>
 
-      <div class="media media-chat">
-        <div class="media-body" id="chat-messages">
-            {% for m in messages %}
-            <b>{{ m.user.username }}</b>
-            <div class="media-body w-fit"><p>{{ m.content }}</p></div>
-            <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
-            {% endfor %}
+        <div id="chat-messages">
+        {% for m in messages %}
+        {% if m.user == request.user %}
+        <div class="media media-chat media-chat-reverse">
+            <div class="media-body">
+                <p>{{ m.content }}</p>
+            </div>
         </div>
-      </div>
-      <div class="media media-chat media-chat-reverse">
-        <div class="media-body">
-          <p>Okay</p>
-          <p>We will go on sunday? </p>
-          <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
+        {% else %}
+        <div class="media media-chat">
+            <div class="media-body">
+                <b>{{ m.user.username }}</b>
+                <div class="media-body w-fit"><p>{{ m.content }}</p></div>
+                <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
+            </div>
         </div>
-      </div>
+        {% endif %}
+        {% endfor %}
+        </div>
+<!--      <div class="media media-chat media-chat-reverse">-->
+<!--        <div class="media-body">-->
+<!--          <p>Okay</p>-->
+<!--          <p>We will go on sunday? </p>-->
+<!--          <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>-->
+<!--        </div>-->
+<!--      </div>-->
 <!--      <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">-->
 <!--          <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>-->
 <!--      </div>-->
@@ -60,6 +70,7 @@
                 class="px-5 py-3 text-white rounded-xl bg-indigo-500 hover:bg-indigo-700"
                 id="chat-message-submit">Отправить</button>
             </div>
+        </form>
     </div>
 </div>
 
@@ -84,7 +95,11 @@
         const data = JSON.parse(e.data);
 
         if (data.message) {
-            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+            let html = '<div class="media media-chat media-chat-reverse">';
+                html += '<div class="media-body">';
+                html+='<p>' + data.message + '</p></div></div>';
+
+            document.querySelector('#chat-messages').innerHTML += html;
         } else {
             alert('The message was empty!')
         }
