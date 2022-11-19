@@ -18,12 +18,12 @@
         </div>
         <div class="text-auto w-10/12 my-auto">
             <h4 class="text-center text-xl"><strong>{{ room.name }}</strong></h4>
+            <h5 class="text-center text-sm text-gray-600">{{ number_of_users }} участника</h5>
         </div>
 
         <div class="w-1/12 my-auto pr-2">
                 <a href="/rooms/"><img class='' height="100%" src="{% static 'chat/door.png' %}"></a>
         </div>
-<!--          <h4>{{ message.user.username.sum }}</h4>-->
     </div>
 
     <div class="" id="chat-content"
@@ -37,6 +37,7 @@
         <div class="media media-chat media-chat-reverse">
             <div class="media-body">
                 <p>{{ m.content }}</p>
+                <p class="meta"><time datetime="2022">{{ m.date_added }}</time></p>
             </div>
         </div>
         {% else %}

@@ -32,6 +32,7 @@
     opacity: .8;
 }
 
+
 .media-meta-day {
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -52,9 +53,6 @@
 .media-meta-day::before {
     margin-right: 16px;
 }
-
-
-
 
 .media-meta-day::before, .media-meta-day::after {
     content: '';
@@ -99,6 +97,10 @@
     clear: right;
     background-color: #6366F1;
     color: #fff;
+}
+
+.media-chat-reverse time {
+    color: #9b9b9b;
 }
 
 .media-chat-reverse .media-body {
