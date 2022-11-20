@@ -14,3 +14,4 @@ class Message(models.Model):
 
     class Meta:
         ordering = ('date_added',)
+        verbose_name_plural = 'Messages'

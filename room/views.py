@@ -22,8 +22,16 @@ def room(request, slug):
             if message.user not in users:
                 users.append(message.user)
         number_of_users = len(users)
+        if number_of_users == 0:
+            number_of_users = 1
         return render(request, 'room/room.html', {'room': room, 'messages': messages, 'number_of_users':number_of_users})
     except ObjectDoesNotExist:
         room = Room.objects.create(name=slug, slug=slug)
         messages = Message.objects.filter(room=room)
-        return render(request, 'room/room.html', {'room': room, 'messages': messages,})
+        for message in room_messages:
+            if message.user not in users:
+                users.append(message.user)
+        number_of_users = len(users)
+        if number_of_users == 0:
+            number_of_users = 1
+        return render(request, 'room/room.html', {'room': room, 'messages': messages, 'number_of_users':number_of_users})

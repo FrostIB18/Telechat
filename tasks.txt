@@ -1,0 +1,5 @@
+1. Make a right view of messages from other account
+3. Make a right view of date and time
+4. Add dynamic loading for messages
+5. Add 2 marks for a message
+6. Make a date for just sent message
