@@ -28,6 +28,8 @@ def room(request, slug):
     except ObjectDoesNotExist:
         room = Room.objects.create(name=slug, slug=slug)
         messages = Message.objects.filter(room=room)
+        room_messages = Message.objects.filter(room=room)
+        users = []
         for message in room_messages:
             if message.user not in users:
                 users.append(message.user)
